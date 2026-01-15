@@ -1,0 +1,19 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch PICO-8 Cartridge",
+            "type": "cppdbg",
+
+            "request": "launch",
+
+            "postDebugTask": "pico-8-launch",
+
+            "program": "C:\\Windows\\System32\\cmd.exe",
+            "args": ["/c", "echo Running PICO-8..."],
+
+            "cwd": "${workspaceFolder}",
+            "externalConsole": false,
+        }
+    ]
+}

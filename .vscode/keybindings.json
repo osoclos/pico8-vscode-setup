@@ -1,0 +1,238 @@
+// NOTE: These keybindings will **NOT** work right out of the box; you will need to copy everything inside the square brackets (`[]`) and append them to your user keybindings (you can access them via opening up the command palette (`Ctrl+Shift+P`) and typing `Preferences: Open Keyboard Shortcuts (JSON)`).
+
+[
+    // PICO-8 Keybindings
+    {
+        "key": "Shift+A",
+
+        "command": "type",
+        "args": { "text": "█" },
+
+        "when": "editorTextFocus && editorLangId == 'pico-8-lua'"
+    },
+
+    {
+        "key": "Shift+B",
+
+        "command": "type",
+        "args": { "text": "▒" },
+
+        "when": "editorTextFocus && editorLangId == 'pico-8-lua'"
+    },
+
+    {
+        "key": "Shift+C",
+
+        "command": "type",
+        "args": { "text": "🐱" },
+
+        "when": "editorTextFocus && editorLangId == 'pico-8-lua'"
+    },
+
+    {
+        "key": "Shift+D",
+
+        "command": "type",
+        "args": { "text": "⬇" },
+
+        "when": "editorTextFocus && editorLangId == 'pico-8-lua'"
+    },
+
+    {
+        "key": "Shift+E",
+
+        "command": "type",
+        "args": { "text": "░" },
+
+        "when": "editorTextFocus && editorLangId == 'pico-8-lua'"
+    },
+
+    {
+        "key": "Shift+F",
+
+        "command": "type",
+        "args": { "text": "✽" },
+
+        "when": "editorTextFocus && editorLangId == 'pico-8-lua'"
+    },
+
+    {
+        "key": "Shift+G",
+
+        "command": "type",
+        "args": { "text": "●" },
+
+        "when": "editorTextFocus && editorLangId == 'pico-8-lua'"
+    },
+
+    {
+        "key": "Shift+H",
+
+        "command": "type",
+        "args": { "text": "♥" },
+
+        "when": "editorTextFocus && editorLangId == 'pico-8-lua'"
+    },
+
+    {
+        "key": "Shift+I",
+
+        "command": "type",
+        "args": { "text": "☉" },
+
+        "when": "editorTextFocus && editorLangId == 'pico-8-lua'"
+    },
+
+    {
+        "key": "Shift+J",
+
+        "command": "type",
+        "args": { "text": "웃" },
+
+        "when": "editorTextFocus && editorLangId == 'pico-8-lua'"
+    },
+
+    {
+        "key": "Shift+K",
+
+        "command": "type",
+        "args": { "text": "⌂" },
+
+        "when": "editorTextFocus && editorLangId == 'pico-8-lua'"
+    },
+
+    {
+        "key": "Shift+L",
+
+        "command": "type",
+        "args": { "text": "⬅" },
+
+        "when": "editorTextFocus && editorLangId == 'pico-8-lua'"
+    },
+
+    {
+        "key": "Shift+M",
+
+        "command": "type",
+        "args": { "text": "😐" },
+
+        "when": "editorTextFocus && editorLangId == 'pico-8-lua'"
+    },
+
+    {
+        "key": "Shift+N",
+
+        "command": "type",
+        "args": { "text": "♪" },
+
+        "when": "editorTextFocus && editorLangId == 'pico-8-lua'"
+    },
+
+    {
+        "key": "Shift+O",
+
+        "command": "type",
+        "args": { "text": "🅾" },
+
+        "when": "editorTextFocus && editorLangId == 'pico-8-lua'"
+    },
+
+    {
+        "key": "Shift+P",
+
+        "command": "type",
+        "args": { "text": "◆" },
+
+        "when": "editorTextFocus && editorLangId == 'pico-8-lua'"
+    },
+
+    {
+        "key": "Shift+Q",
+
+        "command": "type",
+        "args": { "text": "…" },
+
+        "when": "editorTextFocus && editorLangId == 'pico-8-lua'"
+    },
+
+    {
+        "key": "Shift+R",
+
+        "command": "type",
+        "args": { "text": "➡" },
+
+        "when": "editorTextFocus && editorLangId == 'pico-8-lua'"
+    },
+
+    {
+        "key": "Shift+S",
+
+        "command": "type",
+        "args": { "text": "★" },
+
+        "when": "editorTextFocus && editorLangId == 'pico-8-lua'"
+    },
+
+    {
+        "key": "Shift+T",
+
+        "command": "type",
+        "args": { "text": "⧗" },
+
+        "when": "editorTextFocus && editorLangId == 'pico-8-lua'"
+    },
+
+    {
+        "key": "Shift+U",
+
+        "command": "type",
+        "args": { "text": "⬆" },
+
+        "when": "editorTextFocus && editorLangId == 'pico-8-lua'"
+    },
+
+    {
+        "key": "Shift+V",
+
+        "command": "type",
+        "args": { "text": "ˇ" },
+
+        "when": "editorTextFocus && editorLangId == 'pico-8-lua'"
+    },
+
+    {
+        "key": "Shift+W",
+
+        "command": "type",
+        "args": { "text": "∧" },
+
+        "when": "editorTextFocus && editorLangId == 'pico-8-lua'"
+    },
+
+    {
+        "key": "Shift+X",
+
+        "command": "type",
+        "args": { "text": "❎" },
+
+        "when": "editorTextFocus && editorLangId == 'pico-8-lua'"
+    },
+
+    {
+        "key": "Shift+Y",
+
+        "command": "type",
+        "args": { "text": "▤" },
+
+        "when": "editorTextFocus && editorLangId == 'pico-8-lua'"
+    },
+
+    {
+        "key": "Shift+Z",
+
+        "command": "type",
+        "args": { "text": "▥" },
+
+        "when": "editorTextFocus && editorLangId == 'pico-8-lua'"
+    }
+]
