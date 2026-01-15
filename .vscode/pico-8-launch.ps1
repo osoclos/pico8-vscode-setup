@@ -28,7 +28,26 @@ if ([string]::IsNullOrWhiteSpace($env:ENTRY_CART_PATH)) {
     exit 1
 }
 
-if (-not (Test-Path $env:ENTRY_CART_PATH)) {
+$entry_content = Get-Content $env:ENTRY_FILE_PATH
+
+if (Test-Path $env:ENTRY_CART_PATH) {
+    $content = Get-Content $env:ENTRY_CART_PATH
+
+    $in_lua_section = $false
+    $patched_content = foreach ($line in $content) {
+        if (-not $in_lua_section) {
+            Write-Output $line
+            if ($line -match [regex]::Escape("__lua__")) {
+                $in_lua_section = $true
+                Write-Output $entry_content "-- __END-LUA__ --"
+            }
+        } elseif ($line -match [regex]::Escape("-- __END-LUA__ --")) {
+            $in_lua_section = $false
+        }
+    }
+
+    Set-Content $env:ENTRY_CART_PATH $patched_content
+} else {
     $template_file_path = ".vscode\__template.p8"
     if (-not (Test-Path $template_file_path)) {
         Write-Error "Template cartridge .p8 file is missing! If you deleted it by accident, it is strongly recommended that you re-download it from the template repository again. (https://github.com/osoclos/pico8-vscode-setup/tree/main/.vscode/__template.p8)"
@@ -36,10 +55,11 @@ if (-not (Test-Path $env:ENTRY_CART_PATH)) {
     }
 
     $template_content = Get-Content $template_file_path
+
     $cartridge_content = foreach ($line in $template_content) {
         Write-Output $line
         if ($line -match [regex]::Escape("__lua__")) {
-            Write-Output ("#include " + $env:ENTRY_FILE_PATH)
+            Write-Output $entry_content "-- __END-LUA__ --"
         }
     }
 
