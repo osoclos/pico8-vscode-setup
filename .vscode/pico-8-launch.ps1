@@ -5,7 +5,7 @@
     .DESCRIPTION
         1. Computes the relative path from the root path to the entry .lua file.
         2. Copies the template cartridge file and patches the entry cartridge file with the computed relative path.
-        3. Runs PICO-8 with the cartridge.
+        3. Runs PICO-8 with the cartridge, alongside any user-defined arguments.
 #>
 
 if ([string]::IsNullOrWhiteSpace($env:PICO8_EXE_PATH)) {
@@ -66,4 +66,9 @@ if (Test-Path $env:ENTRY_CART_PATH) {
     Set-Content $env:ENTRY_CART_PATH $cartridge_content
 }
 
-Start-Process -FilePath $env:PICO8_EXE_PATH -ArgumentList $env:ENTRY_CART_PATH, "-run", $env:ENTRY_CART_PATH -NoNewWindow -Wait
+$final_args = @($env:ENTRY_CART_PATH)
+if (-not [string]::IsNullOrWhiteSpace($env:PICO8_ARGS)) {
+    $final_args += $env:PICO8_ARGS
+}
+
+Start-Process -FilePath $env:PICO8_EXE_PATH -ArgumentList $final_args -NoNewWindow -Wait

@@ -11,7 +11,7 @@ You will need to install the following extension and font (optional but recommen
 
 ## Setup
 
-Before you begin running, you will need to setup environment variables in `"env"` located in `.vscode/tasks.json`, specifically `PICO8_EXE_PATH`, which is an absolute path to your PICO-8 executable. You may also wish to change the cartridge entry file (`ENTRY_CART_PATH`) and your Lua entry file (`ENTRY_FILE_PATH`).
+Before you begin running, you will need to setup environment variables in `"env"` located in `.vscode/launch.json`, specifically `PICO8_EXE_PATH`, which is an absolute path to your PICO-8 executable. You may also wish to change the cartridge entry file (`ENTRY_CART_PATH`) and your Lua entry file (`ENTRY_FILE_PATH`), as well as any [arguments](https://pico-8.fandom.com/wiki/RunningPico8) that you may want to pass to PICO-8 via `PICO8_ARGS`.
 
 ### Keybinds
 
