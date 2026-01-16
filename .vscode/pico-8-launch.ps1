@@ -8,6 +8,8 @@
         3. Runs PICO-8 with the cartridge, alongside any user-defined arguments.
 #>
 
+$END_LUA_SECTION_SEGMENT = "--__lua-end__--"
+
 if ([string]::IsNullOrWhiteSpace($env:PICO8_EXE_PATH)) {
     Write-Error "ERR: PICO8_EXE_PATH has not been specified. Did you specify a path in the .vscode/tasks.json file?"
     exit 1
@@ -39,29 +41,31 @@ if (Test-Path $env:ENTRY_CART_PATH) {
             Write-Output $line
             if ($line -match [regex]::Escape("__lua__")) {
                 $in_lua_section = $true
-                Write-Output $entry_content "-- __END-LUA__ --"
+                Write-Output $entry_content $END_LUA_SECTION_SEGMENT
             }
-        } elseif ($line -match [regex]::Escape("-- __END-LUA__ --")) {
+        } elseif ($line -match [regex]::Escape($END_LUA_SECTION_SEGMENT)) {
             $in_lua_section = $false
         }
     }
 
     Set-Content $env:ENTRY_CART_PATH $patched_content
 } else {
-    $template_file_path = ".vscode\__template.p8"
-    if (-not (Test-Path $template_file_path)) {
-        Write-Error "Template cartridge .p8 file is missing! If you deleted it by accident, it is strongly recommended that you re-download it from the template repository again. (https://github.com/osoclos/pico8-vscode-setup/tree/main/.vscode/__template.p8)"
-        exit 1
-    }
+    $cartridge_content =
+@"
+pico-8 cartridge // http://www.pico-8.com
+version 42
+__lua__
+$entry_content
+$END_LUA_SECTION_SEGMENT
 
-    $template_content = Get-Content $template_file_path
-
-    $cartridge_content = foreach ($line in $template_content) {
-        Write-Output $line
-        if ($line -match [regex]::Escape("__lua__")) {
-            Write-Output $entry_content "-- __END-LUA__ --"
-        }
-    }
+__gfx__
+00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00700700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00077000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00077000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00700700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+"@
 
     Set-Content $env:ENTRY_CART_PATH $cartridge_content
 }
