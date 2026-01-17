@@ -4,7 +4,9 @@ A simple template repository to setup a Windows development environment for [PIC
 
 ## Prerequisites
 
-You will need to install the following extension and font (optional but recommended):
+You will need to install the following runtime, extension and font (optional but recommended):
+
+- [Node.js Runtime](https://nodejs.org/)
 
 - [Extension by Pollywog Games](https://marketplace.visualstudio.com/items?itemName=PollywogGames.pico8-ls)
 - [Font by Simbax](https://fontstruct.com/fontstructions/show/2052852/pico-8-27)

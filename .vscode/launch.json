@@ -3,9 +3,11 @@
     "configurations": [
         {
             "name": "Launch PICO-8 Cartridge",
-            "type": "cppdbg",
+            "type": "node",
 
             "request": "launch",
+
+            "cwd": "${workspaceFolder}",
 
             "program": "C:/Windows/System32/WindowsPowerShell/v1.0/powershell.exe",
             "args": [
@@ -18,34 +20,16 @@
                 "${workspaceFolder}/.vscode/pico-8-launch.ps1"
             ],
 
-            "environment": [
-                // The path of the entry .lua file relative to your workspace folder (the folder housing the `.vscode` folder).
-                {
-                    "name": "ENTRY_FILE_PATH",
-                    "value": "hello.lua"
-                },
+            "env": {
+                "ENTRY_FILE_PATH": "hello.lua", // The path of the entry .lua file relative to your workspace folder (the folder housing the `.vscode` folder).
+                "ENTRY_CART_PATH": "hello.p8", // The path of the .p8 cartridge file relative to your workspace folder.
 
-                // The path of the .p8 cartridge file relative to your workspace folder.
-                {
-                    "name": "ENTRY_CART_PATH",
-                    "value": "hello.p8"
-                },
+                "PICO8_EXE_PATH": "", // The absolute path to the PICO-8 executable (the folder which was extracted from the .zip file and contains the PICO-8 executable).
 
-                // The absolute path to the PICO-8 executable (the folder which was extracted from the .zip file and contains the PICO-8 executable).
-                {
-                    "name": "PICO8_EXE_PATH",
-                    "value": ""
-                },
+                "PICO8_ARGS": "-run $ENTRY_CART_PATH" // The list of arguments to pass into PICO-8
+            },
 
-                // The list of arguments to pass into PICO-8
-                {
-                    "name": "PICO8_ARGS",
-                    "value": "-run $ENTRY_CART_PATH"
-                }
-            ],
-
-            "cwd": "${workspaceFolder}",
-            "externalConsole": false,
+            "console": "integratedTerminal"
         }
     ]
 }
