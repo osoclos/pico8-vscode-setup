@@ -7,18 +7,8 @@
 
             "request": "launch",
 
+            "program": "${workspaceFolder}/.vscode/pico-8-launch.mjs",
             "cwd": "${workspaceFolder}",
-
-            "program": "C:/Windows/System32/WindowsPowerShell/v1.0/powershell.exe",
-            "args": [
-                "-NoProfile",
-
-                "-ExecutionPolicy",
-                "Bypass",
-
-                "-File",
-                "${workspaceFolder}/.vscode/pico-8-launch.ps1"
-            ],
 
             "env": {
                 "ENTRY_FILE_PATH": "hello.lua", // The path of the entry .lua file relative to your workspace folder (the folder housing the `.vscode` folder).
@@ -29,6 +19,7 @@
                 "PICO8_ARGS": "-run $ENTRY_CART_PATH" // The list of arguments to pass into PICO-8
             },
 
+            "postDebugTask": "patch-exported-files",
             "console": "integratedTerminal"
         }
     ]
