@@ -10,6 +10,8 @@
  */
 
 import fs from "fs";
+import path from "path";
+
 import childProcess from "child_process";
 
 import readline from "readline/promises";
@@ -38,6 +40,8 @@ __gfx__
 00700700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000\
 `;
 
+const INCLUDE_STATEMENT_REG = /^\s*#include\s+(\S+)/dgm;
+
 const {
     ENTRY_FILE_PATH = null,
     ENTRY_CART_PATH = null,
@@ -61,6 +65,9 @@ if (!fs.existsSync(ENTRY_FILE_PATH)) errAndExit("ENTRY_FILE_PATH points to a mis
 if (ENTRY_CART_PATH === null || ENTRY_CART_PATH.trim() === "") errAndExit("ENTRY_CART_PATH has not been specified. Did you specify a path in the .vscode/launch.json file?");
 
 let entryContent = fs.readFileSync(ENTRY_FILE_PATH, "utf-8").trim();
+const entryParentPath = path.relative(path.dirname(ENTRY_CART_PATH), path.dirname(ENTRY_FILE_PATH));
+
+entryContent = repathIncludeStatements(entryContent, entryParentPath);
 
 /** @type {string} */
 let patchedContent;
@@ -102,10 +109,34 @@ const pico8 = childProcess.spawn(PICO8_EXE_PATH, pico8Args, { stdio: "inherit" }
 
 pico8.on("exit", (code) => void process.exit(code ?? 0));
 
+/** Resolves include paths to make it relative to another parent path
+ *
+ *  @param {string} code the code to repath statements in
+ *  @param {number} folderPath the folder path of the file that contains this code
+ *
+ *  @returns {string} the code with repathed include statements
+ */
+function repathIncludeStatements(code, folderPath) {
+    /** @type {RegExpExecArray | null} */
+    let match;
+
+    do {
+        match = INCLUDE_STATEMENT_REG.exec(code);
+        if (match === null) break;
+
+        const includePath = match[1];
+        const [includePathStart, includePathEnd] = match.indices[1];
+
+        code = code.slice(0, includePathStart) + path.join(folderPath, includePath) + code.slice(includePathEnd);
+    } while (match !== null);
+
+    return code;
+}
+
 /** Prints an error statement and exits out of the script with an optionally specified code.
  *
- * @param {string} msg
- * @param {number} code
+ * @param {string} msg the error message to accompany the code
+ * @param {number} code the error code to exit
  */
 function errAndExit(msg, code = 1) {
     console.error(`ERR: ${msg}`);
@@ -114,7 +145,7 @@ function errAndExit(msg, code = 1) {
 
 /** Asks the user to choose yes or no with a given prompt.
  *
- * @param {string} prompt
+ * @param {string} prompt the question to ask
  * @returns {Promise<boolean>} the answer to the statement (Yes if `true`, No if `false`)
  */
 async function chooseYesOrNo(prompt) {
