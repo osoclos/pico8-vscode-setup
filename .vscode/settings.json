@@ -1,4 +1,5 @@
 {
+    "files.associations": { "*.lua": "pico-8-lua" },
     "[pico-8-lua]": {
         "editor.fontFamily": "PICO-8",
         "editor.fontSize": 14
