@@ -19,7 +19,6 @@
                 "PICO8_ARGS": "-run $ENTRY_CART_PATH" // The list of arguments to pass into PICO-8
             },
 
-            "postDebugTask": "patch-exported-files",
             "console": "integratedTerminal"
         }
     ]
