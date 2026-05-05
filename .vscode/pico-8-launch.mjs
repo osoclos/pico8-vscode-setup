@@ -98,7 +98,7 @@ if (fs.existsSync(ENTRY_CART_PATH)) {
     }
 
     patchedContent = [...cartLines.slice(0, startLuaSectionIdx + 1), entryContent, ...(endLuaSectionIdx < 0 ? "" : cartLines.slice(endLuaSectionIdx))].join("\n");
-} else patchedContent = [TEMPLATE_CARTRIDGE_HEADER, entryContent, END_LUA_SEGMENT, TEMPLATE_CARTRIDGE_FOOTER].join("\n");
+} else patchedContent = [TEMPLATE_CARTRIDGE_HEADER, START_LUA_SEGMENT, entryContent, END_LUA_SEGMENT, TEMPLATE_CARTRIDGE_FOOTER].join("\n");
 
 fs.writeFileSync(ENTRY_CART_PATH, patchedContent);
 
@@ -151,6 +151,6 @@ function errAndExit(msg, code = 1) {
 async function chooseYesOrNo(prompt) {
     const YES_ANSWER = "yes";
 
-    const reply = await input.question(`${prompt} [Y/N] > `).toLowerCase();
+    const reply = (await input.question(`${prompt} [Y/N] > `)).toLowerCase();
     return Array(YES_ANSWER.length).fill("").map((_, i) => YES_ANSWER.slice(0, i + 1)).includes(reply);
 }
