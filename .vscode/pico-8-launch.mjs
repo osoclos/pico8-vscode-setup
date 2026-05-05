@@ -69,6 +69,8 @@ const entryParentPath = path.relative(path.dirname(ENTRY_CART_PATH), path.dirnam
 
 entryContent = repathIncludeStatements(entryContent, entryParentPath);
 
+let runPico8 = true;
+
 /** @type {string} */
 let patchedContent;
 if (fs.existsSync(ENTRY_CART_PATH)) {
@@ -77,9 +79,7 @@ if (fs.existsSync(ENTRY_CART_PATH)) {
     let startLuaSectionIdx = cartLines.indexOf(START_LUA_SEGMENT);
     if (startLuaSectionIdx < 0) {
         console.warn("WARN: Unable to determine code section in cartridge, cartridge file may be invalid or corrupted.");
-
-        const doExit = await chooseYesOrNo("Do you wish to proceed?");
-        if (doExit) process.exit(0);
+        runPico8 = await chooseYesOrNo("Do you wish to proceed?");
 
         startLuaSectionIdx = Math.max(cartLines.indexOf(CART_HEADER_END_SEGMENT), 0);
     }
@@ -92,22 +92,22 @@ if (fs.existsSync(ENTRY_CART_PATH)) {
 
     if (endLuaSectionIdx < 0) {
         console.warn("WARN: Unable to determine remaining data section in cartridge, cartridge file may be invalid or corrupted.");
-
-        const doExit = await chooseYesOrNo("Do you wish to proceed?");
-        if (doExit) process.exit(0);
+        runPico8 = await chooseYesOrNo("Do you wish to proceed?");
     }
 
     patchedContent = [...cartLines.slice(0, startLuaSectionIdx + 1), entryContent, ...(endLuaSectionIdx < 0 ? "" : cartLines.slice(endLuaSectionIdx))].join("\n");
 } else patchedContent = [TEMPLATE_CARTRIDGE_HEADER, START_LUA_SEGMENT, entryContent, END_LUA_SEGMENT, TEMPLATE_CARTRIDGE_FOOTER].join("\n");
 
-fs.writeFileSync(ENTRY_CART_PATH, patchedContent);
+if (runPico8) {
+    fs.writeFileSync(ENTRY_CART_PATH, patchedContent);
 
-const pico8Args = [ENTRY_CART_PATH];
-if (PICO8_ARGS !== "") pico8Args.push(...PICO8_ARGS.split(" "));
+    const pico8Args = [ENTRY_CART_PATH];
+    if (PICO8_ARGS !== "") pico8Args.push(...PICO8_ARGS.split(" "));
 
-const pico8 = childProcess.spawn(PICO8_EXE_PATH, pico8Args, { stdio: "inherit" });
+    const pico8 = childProcess.spawn(PICO8_EXE_PATH, pico8Args, { stdio: "inherit" });
 
-pico8.on("exit", (code) => void process.exit(code ?? 0));
+    pico8.on("exit", (code) => void process.exit(code ?? 0));
+} else process.exit(0);
 
 /** Resolves include paths to make it relative to another parent path
  *
@@ -149,8 +149,12 @@ function errAndExit(msg, code = 1) {
  * @returns {Promise<boolean>} the answer to the statement (Yes if `true`, No if `false`)
  */
 async function chooseYesOrNo(prompt) {
-    const YES_ANSWER = "yes";
+    while (true) {
+        const reply = await input.question(`${prompt} [Y/N] > `).then((str) => str.toLowerCase().trim());
 
-    const reply = (await input.question(`${prompt} [Y/N] > `)).toLowerCase();
-    return Array(YES_ANSWER.length).fill("").map((_, i) => YES_ANSWER.slice(0, i + 1)).includes(reply);
+        if (reply === "y" || reply === "yes") return true;
+        if (reply === "n" || reply === "no" ) return false;
+
+        console.log("ERR: Invalid input answer. Please enter one of the given choices.");
+    }
 }
